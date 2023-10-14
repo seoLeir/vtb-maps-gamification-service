@@ -1,5 +1,6 @@
 package com.bnk.vtbmapsgamificationservice.entities;
 
+import com.bnk.vtbmapsgamificationservice.entities.keys.UserQuestKey;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,14 +16,12 @@ import java.util.List;
 @Table(name="users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "jwt_token")
     String jwtToken;
 
-    @ManyToMany
-    @JoinTable(name="users_quests",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="quest_id"))
-    List<Quest> completedQuests;
+    @OneToMany(fetch = FetchType.LAZY)
+    UserQuest userQuest;
 }

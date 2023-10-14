@@ -2,13 +2,14 @@ package com.bnk.vtbmapsgamificationservice.entities;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
+import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -16,12 +17,21 @@ import java.util.List;
 @Table(name="departments")
 public class Department {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Long id;
 
-    @ManyToMany
-    @JoinTable(name="departments_quests",
-            joinColumns = @JoinColumn(name="department_id"),
-            inverseJoinColumns = @JoinColumn(name="quest_id"))
-    List<Quest> availableQuests;
+    @OneToMany(fetch = FetchType.LAZY)
+    private DepartmentQuest departmentQuest;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

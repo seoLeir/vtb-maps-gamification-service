@@ -13,10 +13,25 @@ import lombok.experimental.FieldDefaults;
 @Table(name="quests")
 public class Quest {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     Long exp;
 
     String text;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    UserQuest userQuest;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    DepartmentQuest departmentQuest;
+
+    @Override
+    public String toString() {
+        return "Quest{" +
+                "id=" + id +
+                ", exp=" + exp +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }
